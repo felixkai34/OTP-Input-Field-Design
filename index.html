@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        main{
+            width: 100%;
+            height: 100vh;
+            color: white;
+            background: rgb(25, 26, 26);
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        main h1{
+            font-size: 40px;
+            margin-bottom: 30px;
+        }
+        h3 span{
+            position: relative;
+        }
+        h3 span::before{
+            content: '';
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            animation: myani 1s linear infinite;
+        }
+        @keyframes myani{
+            0%{
+                content: '.';
+            }
+            25%{
+                content: '..';
+            }
+            50%{
+                content: '...';
+            }
+            75%{
+                content: '....';
+            }
+            100%{
+                content: '.....';
+            }
+        }
+        main div input{
+            max-width: 75px;
+            height: 75px;
+            margin: 2px;
+            border: 2px solid rgb(41, 172, 131);
+
+            border-radius: 5px;
+            font-size: 50px;
+            text-align: center;
+
+            outline: none;
+        }
+
+        /* Hide Arrow in input type number */
+        input::-webkit-inner-spin-button,
+        input::-webkit-outer-spin-button{
+            -webkit-appearance: none;
+        }
+
+        main div input:focus{
+            border: 2px solid rgb(41, 172, 131);
+            box-shadow: 2px 2px 5px rgb(41, 172, 131);
+        }
+        input:disabled{
+            color: rgb(142, 142, 142);
+            background: rgb(46, 43, 43);
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Enter Your OTP</h1>
+        <h3 class="check-text"></h3>
+        <div>
+            <input type="number" autofocus onkeypress="if(this.value.length == 1) return false ;"/>
+            <input type="number" onkeypress="if(this.value.length == 1) return false ;"/>
+            <input type="number" onkeypress="if(this.value.length == 1) return false ;"/>
+            <input type="number" onkeypress="if(this.value.length == 1) return false ;"/>
+            <input type="number" onkeypress="if(this.value.length == 1) return false ;"/>
+            <input type="number" onkeypress="if(this.value.length == 1) return false ;"/>
+        </div>
+    </main>
+
+    <script type="text/javascript">
+
+        let inputs = document.querySelectorAll("input");
+        let checkText = document.querySelector(".check-text")
+
+        inputs.forEach(input=>{
+            input.addEventListener("keyup",keyupHandler)
+        });
+
+
+        function keyupHandler(e) {
+
+            const input = e.target;
+            let value = input.value;
+            
+
+            //focus next input box if user put data
+            if (value !== "") {
+
+                //check last input box
+                if ( input.nextElementSibling == null) {
+
+                    checkText.innerHTML = "We are checking Your OTP <span> </span>"
+                    let fullvalue = "";
+
+                    inputs.forEach(input=>{
+                        input.disabled = true;
+                        fullvalue += input.value;               
+                    });  
+
+                    let userInputOTP = parseInt(fullvalue,10);
+                    console.log(userInputOTP,typeof(userInputOTP));
+
+                } else {
+                    input.nextElementSibling.focus();
+                }
+            }
+
+            // //focus previous input box if user delete data
+            if(e.key == "Backspace"){
+                //check first input box
+                if (input.previousElementSibling == null) {
+                    return;
+                } else {
+                    input.previousElementSibling.focus();
+                }
+            }
+
+            
+            
+        }
+        
+    </script>
+</body>
+</html>
